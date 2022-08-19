@@ -2,4 +2,5 @@ Flask
 PyMySQL
 Flask-SQLAlchemy
 flask-login
-Flask-Mail
+Flask-Migrate
+Flask-WTF

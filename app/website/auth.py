@@ -6,7 +6,7 @@ from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 from .res.mymail import *
 import re
-
+from .forms import LoginForm
 import random, string
 # Make a regular expression
 # for validating an Email
