@@ -6,7 +6,7 @@ from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 from .res.mymail import *
 import re
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 import random, string
 # Make a regular expression
 # for validating an Email
@@ -16,10 +16,10 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method=='POST':
-        email=request.form.get('email')
-        password=request.form.get('password')
-        print(email, flush=True)
+    loginform=LoginForm()
+    if request.method=='POST' and loginform.validate_on_submit():
+        email=loginform.email.data
+        password=loginform.password.data
         testuser = user.query.filter_by(email=email).first()
         if testuser:
             if check_password_hash(testuser.password, password):
@@ -32,7 +32,7 @@ def login():
                  flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exsist.', category='error')
-    return render_template("login.html", user=current_user)
+    return render_template("login.html", user=current_user, form = loginform)
 
 @auth.route('/logout')
 @login_required
@@ -42,28 +42,23 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method=='POST':
-        fname = request.form.get('fname')
-        sname = request.form.get('sname')
-        email = request.form.get('email')
-        password = request.form.get('password')
-        cpassword = request.form.get('cpassword')
+    registerForm=RegisterForm()
+    if request.method=='POST' and registerForm.validate_on_submit():
+        fname = registerForm.firstname.data
+        sname = registerForm.surname.data
+        email = registerForm.email.data
+        password = registerForm.password.data
+        cpassword = registerForm.password_confirm.data
 
         test_user = user.query.filter_by(email=email).first()
         if test_user:
             flash("Email Already Exsists, Please enter a different email address", category='error')
-        elif(not re.fullmatch(regex_email, email)):
-            flash("Invalid Email Address", category='error')
-        elif password != cpassword:
-            flash("Passwords do not match", category='error')
-        elif len(password) < 8:
-            flash("Password must be longer than 8 charecters", category='error')
         else:
             print("user valid", flush=True)
             #print(generateAuthToken(), flush=True);
             auth_token=generateAuthToken()
             new_user = user(email=email, first_name=fname, second_name=sname, password=generate_password_hash(
-                password, method='sha256'), activation_token=auth_token, is_activated=False )
+                password, method='sha256'), activation_token=auth_token, is_activated=True )
             db.session.add(new_user)
             db.session.commit()
             flash("Registration Successful, Please check email to activate account", '')
@@ -72,7 +67,7 @@ def register():
             mail.setSubject("Activate Account")
             mail.setMessage("Visit: localhost:5000/account/activate?token=" + auth_token)
             mail.send()
-    return render_template("register.html", user=current_user)
+    return render_template("register.html", user=current_user, form=registerForm)
 
 def generateAuthToken():
     validToken = False
@@ -95,9 +90,3 @@ def activateAccount():
         isValid = True
         db.session.commit()
     return render_template("activate_account.html", user=current_user, accountActivate=isValid)
-
-
-
-
-
-#from main import app

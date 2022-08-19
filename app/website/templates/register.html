@@ -1,8 +1,74 @@
 {% extends "base_files/base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 {% block content%}
 <form action="/register" class="register-form" method="POST">
     <h1 style="text-align: center">Please Register</h1>
+    {{ form.csrf_token }}
+    
+    <div class="form-group">
+        {{ form.firstname.label }}
+        {{ form.firstname(class="form-control", placeholder="First Name") }}
+    </div>
+    {% if form.firstname.errors %}
+        <ul class="errors">
+            {% for error in form.firstname.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.surname.label }}
+        {{ form.surname(class="form-control", placeholder="Surname") }}
+    </div>
+    {% if form.surname.errors %}
+        <ul class="errors">
+            {% for error in form.surname.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="form-control", placeholder="Enter Email") }}
+    </div>
+    {% if form.email.errors %}
+        <ul class="errors">
+            {% for error in form.email.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="form-control", placeholder="Password") }}
+    </div>
+    {% if form.password.errors %}
+        <ul class="errors">
+            {% for error in form.password.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.password_confirm.label }}
+        {{ form.password_confirm(class="form-control", placeholder="Confirm Password") }}
+    </div>
+    {% if form.password_confirm.errors %}
+        <ul class="errors">
+            {% for error in form.password_confirm.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="input-group">
+        <button type="submit" class="btn btn-primary full-width">Register</button>
+    </div>
+    <!--
     <div class="form-group">
         <label for="exampleInputEmail1">First Name</label>
         <input type="name" class="form-control" id="fname" name="fname" aria-describedby="emailHelp"
@@ -29,5 +95,6 @@
     <div class="input-group">
         <button type="submit" class="btn btn-primary full-width">Login</button>
     </div>
+    -->
 </form>
 {% endblock %}

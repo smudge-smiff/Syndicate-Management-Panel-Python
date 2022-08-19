@@ -3,6 +3,34 @@
 {% block content%}
 <form action="/login" class="login-form" method="POST">
     <h1 style="text-align: center">Login</h1>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="form-control", placeholder="Enter Email") }}
+    </div>
+    {% if form.email.errors %}
+        <ul class="errors">
+            {% for error in form.title.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="form-control", placeholder="Enter Password") }}
+    </div>
+    {% if form.password.errors %}
+        <ul class="errors">
+            {% for error in form.password.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="input-group">
+        <button type="submit" class="btn btn-primary full-width">Login</button>
+    </div>
+    <!--
+    <h1 style="text-align: center">Login</h1>
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
@@ -14,6 +42,6 @@
     </div>
     <div class="input-group">
         <button type="submit" class="btn btn-primary full-width">Login</button>
-    </div>
+    </div>-->
 </form>
 {% endblock %}
