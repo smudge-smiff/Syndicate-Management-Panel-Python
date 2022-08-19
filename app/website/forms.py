@@ -14,4 +14,9 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), EqualTo('password_confirm', message='Passwords do not match')])
     password_confirm = PasswordField(label='Password confirm', validators=[Length(min=6, max=10)])
 
+class CreateAGroupForm(FlaskForm):
+    groupname = StringField("Group Name:", validators=[DataRequired(), Length(min=5, max=40)])
+    
+class JoinAGroupForm(FlaskForm):
+    jointoken = StringField("Join Token:", validators=[DataRequired(), Length(min=12, max=12)])
 

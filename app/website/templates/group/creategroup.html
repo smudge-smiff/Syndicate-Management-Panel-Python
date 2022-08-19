@@ -1,0 +1,23 @@
+{% extends "base_files/base.html" %}
+{% block title %}Create A Group{% endblock %}
+{% block content%}
+<form action="/group/create" class="narrow-form" method="POST">
+    <h1 style="text-align: center">Create a group</h1>
+    {{ form.csrf_token }}
+    
+    <div class="form-group">
+        {{ form.groupname.label }}
+        {{ form.groupname(class="form-control", placeholder="Group Name:") }}
+    </div>
+    {% if form.groupname.errors %}
+        <ul class="errors">
+            {% for error in form.groupname.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <div class="input-group">
+        <button type="submit" class="btn btn-primary full-width">Register</button>
+    </div>
+{% endblock %}

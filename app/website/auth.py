@@ -70,6 +70,9 @@ def register():
     return render_template("register.html", user=current_user, form=registerForm)
 
 def generateAuthToken():
+    # Generates a random string of charecters, 12 in length. Validates Token does not already exsist
+    # If the token exsists in the db, the token will be regenerated
+    # The user then uses the token to validate the account
     validToken = False
     token=''
     while not validToken:
@@ -82,6 +85,8 @@ def generateAuthToken():
 
 @auth.route('/account/activate', methods=['GET'])
 def activateAccount():
+    # The user is email a link, which contains the activation token for their account
+    # If a valid activation token is passed, then the account is activated
     token = request.args.get('token')
     testuser = user.query.filter_by(activation_token=token).first()
     isValid=False

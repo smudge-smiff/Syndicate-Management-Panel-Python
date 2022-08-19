@@ -22,5 +22,6 @@ class group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(150))
     is_activated = db.Column(db.Boolean)
+    join_token = db.Column(db.String(150))
     users = db.relationship('user', secondary=UserGroup, backref='groups')
 
