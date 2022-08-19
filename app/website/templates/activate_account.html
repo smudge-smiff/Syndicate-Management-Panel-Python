@@ -1,0 +1,12 @@
+{% extends "base_files/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content%}
+<h1>Activate Account</h1>
+{% if accountActivate %}
+<p>success</p>
+<p>Please now login</p>
+{% else %}
+<h3>Error</h3>
+<p>Seems like this authentification token is not valid, if the issue persists, please contact the sys admin</p>
+{% endif %}
+{% endblock %}

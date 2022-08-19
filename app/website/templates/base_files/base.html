@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.2.0/dist/superhero/bootstrap.min.css"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>{% block title %}Home{% endblock %}</title>
+</head>
+
+<body>
+    {% include 'base_files/nav.html' %}
+    {% include 'base_files/flashmessage.html' %}
+    <div class="container">{% block content %} {% endblock %}</div>
+
+    {% include 'base_files/footer.html' %}
+
+</body>
+</html>

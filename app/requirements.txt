@@ -1,0 +1,5 @@
+Flask
+PyMySQL
+Flask-SQLAlchemy
+flask-login
+Flask-Mail

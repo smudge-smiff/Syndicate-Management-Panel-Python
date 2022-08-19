@@ -1,0 +1,17 @@
+
+.login-form, .register-form {
+    margin: auto;
+    max-width: 500px;
+}
+.btn {
+    border-radius: 3px;
+}
+.form-control {
+    border-radius: 3px;
+}
+button {
+    &.full-width {
+        margin-top: 1em;
+        width: 100%;
+    }
+}

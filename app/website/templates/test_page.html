@@ -1,0 +1,11 @@
+{% extends "base_files/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content%}
+
+{% if user.is_authenticated %}
+{{user.first_name}}
+{% else %}
+<p>Login bitch</p>
+{% endif %}
+
+{% endblock %}
