@@ -24,10 +24,7 @@ def mygroups():
 
 
 
-@groups.route('/leave', methods=['GET', 'POST'])
-@login_required
-def leave():
-    return "leave"
+
 
 @groups.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -39,6 +36,7 @@ def create():
         jointoken = generateJoinToken()
         new_group = group(group_name=group_name, join_token=jointoken, is_activated=True)
         new_group.users.append(theuser)
+        new_group.adminusers.append(theuser)
         db.session.add(new_group)
         db.session.commit()
         flash("Group Creation Successful", '')
@@ -72,12 +70,41 @@ def join():
             db.session.commit()
     return render_template("group/joingroup.html", user=current_user, form=joinGroupForm)
 
+@groups.route('/leave', methods=['GET', 'POST'])
+@login_required
+def leave():
+    groupID = request.args.get('id')
+    test_group = group.query.filter_by(id=groupID).first()
+    if current_user in test_group.users:
+        test_group.users.remove(current_user)
+        db.session.commit()
+        flash("Left Group", '')
+    else:
+        flash("Not in this group", 'error')
+    return render_template("group/leavegroup.html", user=current_user)
+
 @groups.route('/view')
 @login_required
 def view():
-    thegroup = group.query.filter_by(id=6).first()
-    data = ""
-    for theuser in thegroup.users:
-        data = data + theuser.first_name + " "
-    
-    return data
+    groupID = request.args.get('id')
+    test_group = group.query.filter_by(id=groupID).first()
+    if test_group:
+        flash("valid group", '')
+        if current_user in test_group.adminusers:
+            flash("admin", '')
+    else:
+        flash("Invalid group!", 'error')
+    return render_template("group/viewgroup.html", user=current_user)
+
+@groups.route('/admin')
+@login_required
+def admin():
+    groupID = request.args.get('id')
+    test_group = group.query.filter_by(id=groupID).first()
+    if test_group:
+        flash("valid group", '')
+        if current_user in test_group.adminusers:
+            flash("admin", '')
+    else:
+        flash("Invalid group!", 'error')
+    return render_template("group/groupadmin.html", user=current_user)

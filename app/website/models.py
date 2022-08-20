@@ -4,7 +4,12 @@ from sqlalchemy.sql import func
 
 UserGroup = db.Table('UserGroup',
     db.Column('UserID', db.Integer, db.ForeignKey('user.id')),
-    db.Column('GroupID', db.Integer, db.ForeignKey('group.id'))
+    db.Column('GroupID', db.Integer, db.ForeignKey('group.id')),
+)
+
+GroupAdmins = db.Table('GroupAdmins',
+    db.Column('UserID', db.Integer, db.ForeignKey('user.id')),
+    db.Column('GroupID', db.Integer, db.ForeignKey('group.id')),
 )
 
 class user(db.Model, UserMixin):
@@ -24,4 +29,5 @@ class group(db.Model):
     is_activated = db.Column(db.Boolean)
     join_token = db.Column(db.String(150))
     users = db.relationship('user', secondary=UserGroup, backref='groups')
+    adminusers = db.relationship('user', secondary=GroupAdmins, backref='groupsIsAdmin')
 
