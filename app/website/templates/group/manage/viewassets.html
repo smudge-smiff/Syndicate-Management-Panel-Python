@@ -1,0 +1,7 @@
+{% extends "base_files/base.html" %}
+{% block title %}Create An Asset{% endblock %}
+{% block content%}
+    {% for asset in assets %}
+        <li>{{ asset.asset_name }}</li>
+    {% endfor %}
+{% endblock %}

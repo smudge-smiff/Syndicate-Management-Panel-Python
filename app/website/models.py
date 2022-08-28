@@ -27,7 +27,15 @@ class group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_name = db.Column(db.String(150))
     is_activated = db.Column(db.Boolean)
-    join_token = db.Column(db.String(150))
+    token = db.Column(db.String(150))
     users = db.relationship('user', secondary=UserGroup, backref='groups')
     adminusers = db.relationship('user', secondary=GroupAdmins, backref='groupsIsAdmin')
+    assets = db.relationship('assets', backref='assetgroup')
 
+class assets(db.Model):
+    __tablename__ = 'assets'
+    id = db.Column(db.Integer, primary_key=True)
+    asset_name = db.Column(db.String(150))
+    is_activated = db.Column(db.Boolean)
+    type = db.Column(db.String(150))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))

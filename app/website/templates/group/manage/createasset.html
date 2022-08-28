@@ -1,0 +1,35 @@
+{% extends "base_files/base.html" %}
+{% block title %}Create An Asset{% endblock %}
+{% block content%}
+<form class="narrow-form" method="POST">
+    <h1 style="text-align: center">Create an Asset</h1>
+    {{ form.csrf_token }}
+    
+    <div class="form-group">
+        {{ form.assetname.label }}
+        {{ form.assetname(class="form-control", placeholder="Asset Name") }}
+    </div>
+    {% if form.assetname.errors %}
+        <ul class="errors">
+            {% for error in form.assetname.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form.type.label }}
+        {{ form.type(class="form-select", placeholder="Asset Name") }}
+    </div>
+    {% if form.type.errors %}
+        <ul class="errors">
+            {% for error in form.type.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <div class="input-group">
+        <button type="submit" class="btn btn-primary full-width">Save</button>
+    </div>
+{% endblock %}

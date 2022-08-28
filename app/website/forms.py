@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, SelectField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 
@@ -20,3 +20,6 @@ class CreateAGroupForm(FlaskForm):
 class JoinAGroupForm(FlaskForm):
     jointoken = StringField("Join Token:", validators=[DataRequired(), Length(min=12, max=12)])
 
+class CreateAssetForm(FlaskForm):
+    assetname = StringField("Asset Name:", validators=[DataRequired(), Length(min=2, max=150)])
+    type = SelectField("Asset Type:", choices = [('airplane', 'Airplane'), ('boat', 'Boat'), ('car', 'Car')], validators=[DataRequired()])
