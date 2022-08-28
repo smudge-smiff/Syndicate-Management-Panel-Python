@@ -39,3 +39,13 @@ class assets(db.Model):
     is_activated = db.Column(db.Boolean)
     type = db.Column(db.String(150))
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    bookings = db.relationship('bookings', backref='asset')
+
+class booking(db.Model):
+    __tablename__ = 'bookings'
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    asset_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    starttime = db.Column(db.DateTime)
+    endtime = db.Column(db.DateTime)

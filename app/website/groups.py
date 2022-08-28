@@ -22,10 +22,6 @@ def grouphome():
 def mygroups():
     return "my groups"
 
-
-
-
-
 @groups.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -96,26 +92,26 @@ def view():
         flash("Invalid group!", 'error')
     return render_template("group/viewgroup.html", user=current_user)
 
-@groups.route('/admin')
-@login_required
-def admin():
-    groupID = request.args.get('id')
-    test_group = group.query.filter_by(id=groupID).first()
-    if test_group:
-        flash("valid group", '')
-        if current_user in test_group.adminusers:
-            flash("admin", '')
-    else:
-        flash("Invalid group!", 'error')
-    return render_template("group/groupadmin.html", user=current_user)
+# @groups.route('/admin')
+# @login_required
+# def admin():
+#     groupID = request.args.get('id')
+#     test_group = group.query.filter_by(id=groupID).first()
+#     if test_group:
+#         flash("valid group", '')
+#         if current_user in test_group.adminusers:
+#             flash("admin", '')
+#     else:
+#         flash("Invalid group!", 'error')
+#     return render_template("group/admin/groupadmin.html", user=current_user)
 
-@groups.route('/manage/<group_token>')
+@groups.route('<group_token>/admin')
 @login_required
 def manage(group_token):
     thegroup = checkInGroupByTokenAndAdmin(group_token)
-    return render_template("group/createasset.html", user=current_user, group = thegroup)
+    return render_template("group/admin/groupadmin.html", user=current_user, group = thegroup)
 
-@groups.route('/manage/<group_token>/assets/create', methods=['GET', 'POST'])
+@groups.route('<group_token>/admin//assets/create', methods=['GET', 'POST'])
 @login_required
 def create_asset(group_token):
     thegroup = checkInGroupByTokenAndAdmin(group_token)
@@ -130,14 +126,24 @@ def create_asset(group_token):
         #db.session.add(asset)
         db.session.commit()
         flash("Asset Created", '')
-    return render_template("group/manage/createasset.html",token=group_token, user=current_user, form=createAssetForm)
+    return render_template("group/admin/createasset.html",token=group_token, user=current_user, form=createAssetForm)
 
-@groups.route('/manage/<group_token>/assets', methods=['GET', 'POST'])
+@groups.route('<group_token>/admin/assets', methods=['GET', 'POST'])
 @login_required
 def assetshome(group_token):
     thegroup = checkInGroupByTokenAndAdmin(group_token)
+    return render_template("group/admin/viewassets.html",token=group_token, user=current_user, assets = thegroup.assets)
 
-    return render_template("group/manage/viewassets.html",token=group_token, user=current_user, assets = thegroup.assets)
+@groups.route('<group_token>/admin//assets/<asset_name_arg>', methods=['GET', 'POST'])
+@login_required
+def ViewSingleAsset(group_token, asset_name_arg):
+    thegroup = checkInGroupByTokenAndAdmin(group_token)
+    
+    theasset = assets.query.filter_by(group_id=thegroup.id, asset_name=asset_name_arg).first()
+    if not theasset:
+        abort(404, "Asset does not exsist")
+    print(theasset.id, flush=True)
+    return render_template("group/admin/viewsingleasset.html",token=group_token, user=current_user, asset = theasset)
 
 def checkInGroupByTokenAndAdmin(group_token):
     # blocks all management functions if user is not in the specified group
